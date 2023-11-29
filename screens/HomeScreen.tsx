@@ -1,14 +1,24 @@
 import { Pressable, StyleSheet, Text, View, Image } from "react-native";
 import React, { useContext } from "react";
 import { colorsApp } from "../assets/colors/colorsApp";
-import LoginScreen from "./LoginScreen";
 import { RenderCardListContext } from "../contexts/LoginContext";
+import LoginScreen from "./LoginScreen";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
-// let { userName, isListRendered } = useContext(RenderCardListContext);
-// console.log(userName, isListRendered);
+const HomeScreen = ({
+  navigation,
+}: {
+  navigation: NavigationProp<ParamListBase>;
+}) => {
+  let { userName, isListRendered } = useContext(RenderCardListContext);
 
-const HomeScreen = () => {
-  return (
+  const goToLogin = () => {
+    console.log("Go to login");
+    navigation.navigate("Login");
+  };
+
+  return !isListRendered ? (
     <View style={styles.container}>
       <Text style={styles.welcome}>WELCOME </Text>
       <Image
@@ -18,10 +28,19 @@ const HomeScreen = () => {
       <Pressable
         style={styles.button}
         accessibilityLabel="Buton para al usuario"
-        //onPress={LoginScreen}
+        onPress={goToLogin}
       >
         <Text style={styles.butonText}>LOGIN</Text>
       </Pressable>
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <Text style={styles.welcome}>WELCOME</Text>
+      <Text style={styles.user}>{userName}</Text>
+      <Image
+        source={require("../assets/fox-emoji.png")}
+        style={styles.picture}
+      ></Image>
     </View>
   );
 };
@@ -52,6 +71,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: colorsApp.white,
     marginTop: "-15%",
+  },
+  user: {
+    fontSize: 50,
+    fontWeight: "bold",
+    color: colorsApp.white,
+    marginTop: "-3%",
   },
   picture: {
     width: "10%",

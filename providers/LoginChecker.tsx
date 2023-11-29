@@ -4,11 +4,11 @@ import {
   RenderCardListContextType,
 } from "../contexts/LoginContext";
 
-type RenderCardListProviderProps = {
+type LoginCheckerProps = {
   children: JSX.Element | JSX.Element[];
 };
 
-export const RenderCardListProvider = (props: RenderCardListProviderProps) => {
+export const LoginChecker = (props: LoginCheckerProps) => {
   const { children } = props;
 
   const [isListRendered, setIsListRendered] = React.useState(false);

@@ -1,15 +1,23 @@
-import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Pressable,
+  Alert,
+} from "react-native";
 import React, { useContext, useState } from "react";
 import { colorsApp } from "../assets/colors/colorsApp";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { RenderCardListContext } from "../contexts/LoginContext";
-import { RenderCardListProvider } from "../providers/RenderLoginProvider";
 
 const LoginScreen = () => {
   const [inputUsuario, setInputUsuario] = useState("");
   const [inputPassword, setInputPassword] = useState("");
 
-  let { toggleIsListRendered, setUserName } = useContext(RenderCardListContext);
+  const { toggleIsListRendered, setUserName } = useContext(
+    RenderCardListContext
+  );
 
   const handleChangeUsuario = (text: string) => {
     setInputUsuario(text);
@@ -24,11 +32,11 @@ const LoginScreen = () => {
       password: "1234",
     };
     if (inputUsuario == user.nombre && inputPassword == user.password) {
-      console.log("Login successful");
       setUserName(inputUsuario);
       toggleIsListRendered();
+      alert("Login successful");
     } else {
-      console.log("Login failed");
+      alert("Login failed");
     }
   };
 
@@ -45,6 +53,7 @@ const LoginScreen = () => {
       ></TextInput>
       <TextInput
         placeholder="PASSWORD"
+        secureTextEntry
         placeholderTextColor={colorsApp.white}
         style={styles.inputs}
         onChangeText={handleChangePassword}

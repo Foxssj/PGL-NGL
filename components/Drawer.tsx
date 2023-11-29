@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useContext } from "react";
 import {
   DrawerNavigationOptions,
@@ -7,7 +7,7 @@ import {
 import Header from "./Header";
 import HomeScreen from "../screens/HomeScreen";
 import LoginScreen from "../screens/LoginScreen";
-import InfoUser from "../screens/InfoUser";
+import InfoUser from "../screens/Porfolio";
 import { colorsApp } from "../assets/colors/colorsApp";
 import { RenderCardListContext } from "../contexts/LoginContext";
 
@@ -44,7 +44,11 @@ const CustomDrawer = () => {
         component={HomeScreen}
         options={{ title: "Home" }}
       />
-      <Drawer.Screen name="Login" component={LoginScreen} />
+      <Drawer.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ title: "Login" }}
+      />
     </Drawer.Navigator>
   ) : (
     <Drawer.Navigator
@@ -56,7 +60,11 @@ const CustomDrawer = () => {
         component={HomeScreen}
         options={{ title: "Home" }}
       />
-      <Drawer.Screen name="Info User" component={InfoUser} />
+      <Drawer.Screen
+        name="Portfolio"
+        component={InfoUser}
+        options={{ title: "Portfolio" }}
+      />
     </Drawer.Navigator>
   );
 };
