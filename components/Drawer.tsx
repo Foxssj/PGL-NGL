@@ -4,7 +4,6 @@ import {
   DrawerNavigationOptions,
   createDrawerNavigator,
 } from "@react-navigation/drawer";
-import Header from "./Header";
 import HomeScreen from "../screens/HomeScreen";
 import LoginScreen from "../screens/LoginScreen";
 import InfoUser from "../screens/Porfolio";
@@ -32,7 +31,9 @@ const CustomDrawer = () => {
     drawerType: "front",
   };
 
-  let { isListRendered } = useContext(RenderCardListContext);
+  let { isListRendered, toggleIsListRendered } = useContext(
+    RenderCardListContext
+  );
 
   return !isListRendered ? (
     <Drawer.Navigator
@@ -52,11 +53,12 @@ const CustomDrawer = () => {
     </Drawer.Navigator>
   ) : (
     <Drawer.Navigator
-      initialRouteName="User profile"
+      initialRouteName="Home"
       screenOptions={drawerNavigatorScreenOptions}
+      backBehavior="initialRoute"
     >
       <Drawer.Screen
-        name="Home"
+        name="HomeScreen"
         component={HomeScreen}
         options={{ title: "Home" }}
       />
