@@ -1,11 +1,5 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Pressable,
-  Alert,
-} from "react-native";
+import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
+import users from "../interfaces/users";
 import React, { useContext, useState } from "react";
 import { colorsApp } from "../assets/colors/colorsApp";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -27,16 +21,20 @@ const LoginScreen = () => {
   };
 
   const handleLogin = () => {
-    let user = {
-      nombre: "Nicanor",
-      password: "1234",
-    };
-    if (inputUsuario == user.nombre && inputPassword == user.password) {
-      setUserName(inputUsuario);
-      toggleIsListRendered();
-      alert("Login successful");
-    } else {
-      alert("Login failed");
+    let userIn = false;
+    for (let index = 0; index < users.length; index++) {
+      if (
+        inputUsuario == users[index].nombre &&
+        inputPassword == users[index].password
+      ) {
+        setUserName(inputUsuario);
+        toggleIsListRendered();
+        userIn = true;
+        alert("Login successful");
+      }
+    }
+    if (userIn == false) {
+      alert("Login Failed");
     }
   };
 

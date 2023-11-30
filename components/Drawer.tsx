@@ -63,9 +63,9 @@ const CustomDrawer = () => {
         options={{ title: "Home" }}
       />
       <Drawer.Screen
-        name="Portfolio"
+        name="User Info"
         component={InfoUser}
-        options={{ title: "Portfolio" }}
+        options={{ title: "User Info" }}
       />
     </Drawer.Navigator>
   );
