@@ -18,7 +18,7 @@ export const ShowPortfolio = () => {
           <Text>{information.description}</Text>
         </View>
       </View>
-      <HobbiesNicanor darkMode={false} />
+      <HobbiesNicanor />
     </View>
   );
 };

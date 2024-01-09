@@ -3,11 +3,7 @@ import * as React from "react";
 import { ScrollView, StyleSheet, Text } from "react-native";
 import { colorsApp } from "../assets/colors/colorsApp";
 
-type HobbiesProps = {
-  darkMode: boolean;
-};
-
-const HobbiesNicanor = (props: HobbiesProps) => {
+const HobbiesNicanor = () => {
   return (
     <>
       <Text

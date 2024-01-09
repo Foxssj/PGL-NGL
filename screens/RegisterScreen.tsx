@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
-import users from "../interfaces/users";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useContext, useState } from "react";
 import { colorsApp } from "../assets/colors/colorsApp";
+import users from "../interfaces/users";
 import { RenderCardListContext } from "../contexts/LoginContext";
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   const [inputUsuario, setInputUsuario] = useState("");
   const [inputPassword, setInputPassword] = useState("");
-
+  const [inputEmail, setInputEmail] = useState("");
   const { toggleIsListRendered, setUserName } = useContext(
     RenderCardListContext
   );
@@ -18,28 +18,22 @@ const LoginScreen = () => {
   const handleChangePassword = (text: string) => {
     setInputPassword(text);
   };
+  const handleChangeEmail = (text: string) => {
+    setInputEmail(text);
+  };
 
-  const handleLogin = () => {
+  const handleRegister = () => {
     let userIn = false;
-    for (let index = 0; index < users.length; index++) {
-      if (
-        inputUsuario == users[index].nombre &&
-        inputPassword == users[index].password
-      ) {
-        setUserName(inputUsuario);
-        toggleIsListRendered();
-        userIn = true;
-        alert("Login successful");
-      }
-    }
-    if (userIn == false) {
-      alert("Login Failed");
-    }
+    const usuario = {
+      nombre: inputUsuario,
+      email: inputEmail,
+      password: inputPassword,
+    };
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>LOG-IN</Text>
+      <Text style={styles.header}>REGISTER</Text>
       <Text style={styles.welcoming}>WELCOME</Text>
 
       <TextInput
@@ -47,6 +41,13 @@ const LoginScreen = () => {
         placeholderTextColor={colorsApp.white}
         style={styles.inputs}
         onChangeText={handleChangeUsuario}
+      ></TextInput>
+      <TextInput
+        placeholder="EMAIL"
+        secureTextEntry
+        placeholderTextColor={colorsApp.white}
+        style={styles.inputs}
+        onChangeText={handleChangeEmail}
       ></TextInput>
       <TextInput
         placeholder="PASSWORD"
@@ -59,9 +60,9 @@ const LoginScreen = () => {
       <Pressable
         style={styles.button}
         accessibilityLabel="Buton para al usuario"
-        onPress={() => handleLogin()}
+        onPress={() => handleRegister()}
       >
-        <Text style={styles.butonText}>LOGIN</Text>
+        <Text style={styles.butonText}>REGISTER</Text>
       </Pressable>
 
       <Text style={styles.passwordForgot}>Forgot Password?</Text>
@@ -69,7 +70,7 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
   container: {
