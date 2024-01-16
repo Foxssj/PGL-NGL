@@ -1,8 +1,16 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Alert,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import React, { useContext, useState } from "react";
 import { colorsApp } from "../assets/colors/colorsApp";
 import users from "../interfaces/users";
 import { RenderCardListContext } from "../contexts/LoginContext";
+import { registerUser } from "../services/userService";
 
 const RegisterScreen = () => {
   const [inputUsuario, setInputUsuario] = useState("");
@@ -11,6 +19,7 @@ const RegisterScreen = () => {
   const { toggleIsListRendered, setUserName } = useContext(
     RenderCardListContext
   );
+  let { userName, isListRendered } = useContext(RenderCardListContext);
 
   const handleChangeUsuario = (text: string) => {
     setInputUsuario(text);
@@ -22,13 +31,25 @@ const RegisterScreen = () => {
     setInputEmail(text);
   };
 
-  const handleRegister = () => {
-    let userIn = false;
-    const usuario = {
-      nombre: inputUsuario,
+  const handleRegister = async () => {
+    let usuario = {
+      name: inputUsuario,
       email: inputEmail,
       password: inputPassword,
     };
+
+    if (inputUsuario == "" || inputPassword == "" || inputEmail == "") {
+      return Alert.alert("Error", "Hay campos vacios");
+    }
+
+    if ((await registerUser(usuario)).codigoSalida == 201) {
+      registerUser(usuario);
+      toggleIsListRendered();
+      setUserName(usuario.name);
+    } else {
+      let codError = (await registerUser(usuario)).codigoSalida;
+      Alert.alert(codError.toString(), "Faltan datos o hay datos incorrectos");
+    }
   };
 
   return (
@@ -44,7 +65,6 @@ const RegisterScreen = () => {
       ></TextInput>
       <TextInput
         placeholder="EMAIL"
-        secureTextEntry
         placeholderTextColor={colorsApp.white}
         style={styles.inputs}
         onChangeText={handleChangeEmail}

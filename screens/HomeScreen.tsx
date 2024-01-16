@@ -14,8 +14,10 @@ const HomeScreen = ({
   let { userName, isListRendered } = useContext(RenderCardListContext);
 
   const goToLogin = () => {
-    console.log("Go to login");
     navigation.navigate("Login");
+  };
+  const goToRegister = () => {
+    navigation.navigate("Register");
   };
 
   return !isListRendered ? (
@@ -31,6 +33,13 @@ const HomeScreen = ({
         onPress={goToLogin}
       >
         <Text style={styles.butonText}>LOGIN</Text>
+      </Pressable>
+      <Pressable
+        style={styles.button}
+        accessibilityLabel="Buton para al usuario"
+        onPress={goToRegister}
+      >
+        <Text style={styles.butonText}>REGISTER</Text>
       </Pressable>
     </View>
   ) : (

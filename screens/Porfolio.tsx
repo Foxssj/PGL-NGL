@@ -43,7 +43,7 @@ const Portfolio = () => {
     </View>
   ) : (
     <View style={styles.container}>
-      <Text style={styles.nombrecito}>Gabriel piensa:</Text>
+      <Text style={styles.nombrecito}>{userName} piensa:</Text>
       <Image
         source={require("../assets/fe.png")}
         style={styles.picture}

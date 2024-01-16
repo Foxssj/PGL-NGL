@@ -1,8 +1,16 @@
-import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Pressable,
+  Alert,
+} from "react-native";
 import users from "../interfaces/users";
 import React, { useContext, useState } from "react";
 import { colorsApp } from "../assets/colors/colorsApp";
 import { RenderCardListContext } from "../contexts/LoginContext";
+import { LoginUser } from "../services/userService";
 
 const LoginScreen = () => {
   const [inputUsuario, setInputUsuario] = useState("");
@@ -19,21 +27,18 @@ const LoginScreen = () => {
     setInputPassword(text);
   };
 
-  const handleLogin = () => {
-    let userIn = false;
-    for (let index = 0; index < users.length; index++) {
-      if (
-        inputUsuario == users[index].nombre &&
-        inputPassword == users[index].password
-      ) {
-        setUserName(inputUsuario);
-        toggleIsListRendered();
-        userIn = true;
-        alert("Login successful");
-      }
-    }
-    if (userIn == false) {
-      alert("Login Failed");
+  const handleLogin = async () => {
+    let user = {
+      name: inputUsuario,
+      password: inputPassword,
+    };
+    let codUser = await LoginUser(user);
+    if (codUser == 200) {
+      toggleIsListRendered();
+      setUserName(user.name);
+      Alert.alert(String(codUser), "Login successful");
+    } else {
+      Alert.alert(String(codUser), "Faltan datos o hay datos incorrectos");
     }
   };
 

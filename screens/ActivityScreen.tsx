@@ -5,7 +5,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 import { colorsApp } from "../assets/colors/colorsApp";
 import { getActivities } from "../services/activityService";
 
-const DogsFactsScreen = () => {
+const ActivitiesScreen = () => {
   let [displaySpinner, setDisplaySpinner] = useState<boolean>(false);
   let [totalActivities, setTotalActivities] = useState<string>("1");
   let [activities, setActivities] = useState<string[]>([]);
@@ -76,7 +76,7 @@ const DogsFactsScreen = () => {
   );
 };
 
-export default DogsFactsScreen;
+export default ActivitiesScreen;
 
 const styles = StyleSheet.create({
   screenContainer: {
