@@ -12,6 +12,7 @@ import { RenderCardListContext } from "../contexts/LoginContext";
 import LogoutScreen from "../screens/LogoutScreen";
 import ActivityScreen from "../screens/ActivityScreen";
 import RegisterScreen from "../screens/RegisterScreen";
+import RecorderScreen from "../screens/RecorderScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -79,6 +80,11 @@ const CustomDrawer = () => {
         name="Activities"
         component={ActivityScreen}
         options={{ title: "Activities" }}
+      />
+      <Drawer.Screen
+        name="Recorder"
+        component={RecorderScreen}
+        options={{ title: "Recorder" }}
       />
       <Drawer.Screen
         name="Log off"
