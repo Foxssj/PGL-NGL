@@ -1,16 +1,10 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import {
-  Button,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { Audio } from "expo-av";
-import * as Sharing from "expo-sharing";
+import React, { useEffect, useState } from "react";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { AVPlaybackSource, Audio } from "expo-av";
 import { colorsApp } from "../assets/colors/colorsApp";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const STORAGE_KEY = "recordings";
 
 interface RecordingLine {
   sound: any;
@@ -22,6 +16,33 @@ export default function App() {
   const [recording, setRecording] = useState<any>();
   const [recordings, setRecordings] = useState<RecordingLine[]>([]);
   const [message, setMessage] = useState<string>("");
+
+  useEffect(() => {
+    loadRecordings();
+  }, []);
+
+  async function saveRecordings(records: RecordingLine[]) {
+    try {
+      const recordingsJson = JSON.stringify(records);
+      await AsyncStorage.setItem(STORAGE_KEY, recordingsJson);
+    } catch (error) {
+      console.error("Error saving recordings to AsyncStorage", error);
+    }
+  }
+
+  const loadRecordings = async () => {
+    try {
+      console.log("loading...");
+      const recordingsJson = await AsyncStorage.getItem(STORAGE_KEY);
+      console.log("loaded");
+      if (recordingsJson) {
+        const loadedRecordings: RecordingLine[] = JSON.parse(recordingsJson);
+        setRecordings(loadedRecordings);
+      }
+    } catch (error) {
+      console.error("Error loading recordings from AsyncStorage", error);
+    }
+  };
 
   async function startRecording() {
     try {
@@ -59,6 +80,7 @@ export default function App() {
     });
 
     setRecordings(updatedRecordings);
+    saveRecordings(updatedRecordings);
   }
 
   function getDurationFormatted(millis: number) {
@@ -67,6 +89,25 @@ export default function App() {
     const seconds = Math.round((minutes - minutesDisplay) * 60);
     const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
     return `${minutesDisplay}:${secondsDisplay}`;
+  }
+
+  const playRecordFile = async (recordFile: RecordingLine): Promise<void> => {
+    const playbackObject = new Audio.Sound();
+    await playbackObject.loadAsync({ uri: recordFile.file });
+    await playbackObject.playAsync();
+  };
+
+  const deleteAudio = async (index: number) => {
+    const updatedAudioList = [...recordings];
+    updatedAudioList.splice(index, 1);
+    setRecordings(updatedAudioList);
+    saveRecordings(updatedAudioList);
+  };
+
+  async function deleteAll() {
+    setRecordings([]);
+    saveRecordings([]);
+    console.log(recordings);
   }
 
   function getRecordingLines() {
@@ -78,13 +119,17 @@ export default function App() {
           </Text>
           <Pressable
             style={styles.buton}
-            onPress={() => recordingLine.sound.replayAsync()}
+            onPress={() => {
+              playRecordFile(recordingLine);
+            }}
           >
             <Text style={styles.buttonText}>Play</Text>
           </Pressable>
           <Pressable
             style={styles.buton}
-            onPress={() => recordingLine.sound.replayAsync()}
+            onPress={() => {
+              deleteAudio(index);
+            }}
           >
             <Text style={styles.buttonText}>Delete</Text>
           </Pressable>
@@ -106,7 +151,9 @@ export default function App() {
           </Text>
         </Pressable>
         <Pressable style={styles.recordButton} accessibilityLabel="delete All">
-          <Text style={styles.buttonText}> Borrar todo </Text>
+          <Text style={styles.buttonText} onPress={() => deleteAll()}>
+            Borrar todo
+          </Text>
         </Pressable>
       </View>
       <ScrollView style={styles.scrollviewcito}>
@@ -121,7 +168,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     flex: 1,
-    backgroundColor: colorsApp.white,
+    backgroundColor: colorsApp.black,
     justifyContent: "flex-start",
     padding: "2%",
   },
